@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILD TIDE | Pitch Slate</title>
+    <style>
+        body { font-family: 'Georgia', serif; background: #fdfdfb; color: #1a1a1a; margin: 0; padding: 5vw; line-height: 1.6; }
+        .slate-container { max-width: 900px; margin: auto; }
+        header { border-bottom: 2px solid #000; margin-bottom: 40px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
+        h1 { font-size: clamp(2rem, 8vw, 3.5rem); margin: 0; letter-spacing: 2px; text-transform: uppercase; }
+        .hero-img { width: 100%; height: auto; border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .meta { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #555; }
+        .pitch-text { font-size: 1.5rem; font-style: italic; margin-top: 30px; border-left: 3px solid #000; padding-left: 20px; }
+        .print-btn { background: #000; color: #fff; padding: 15px 30px; text-decoration: none; display: inline-block; cursor: pointer; border: none; font-size: 1rem; margin-top: 40px; border-radius: 4px; font-weight: bold; }
+        @media print { .print-btn { display: none; } body { padding: 0; } }
+    </style>
+</head>
+<body>
+<div class="slate-container">
+    <header><h1>Project Slate</h1><span>IDFA STYLE</span></header>
+    <div class="meta">DOCUMENTARY | IN DEVELOPMENT</div>
+    <img src="https://i.ibb.co/3ykpG04b/pitch-deckimage-1-Cardiff-Amsterdam-Dome.jpg" class="hero-img">
+    <h1>WILD TIDE</h1>
+    <div class="pitch-text">
+        <p>Cardiff has one of the most powerful tidal estuaries on Earth.</p>
+        <p>Amsterdam sits mostly below sea level inside a vast river delta.</p>
+        <p>Both cities are shaped by water.</p>
+        <p>Both must learn to live with water in very different ways.</p>
+    </div>
+    <button class="print-btn" onclick="window.print()">PRINT PITCH DECK (PDF)</button>
+</div>
+</body>
+</html>
