@@ -3,32 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WILD TIDE | Pitch Slate</title>
+    <title>Project Slate | Pitch Decks</title>
     <style>
-        body { font-family: 'Georgia', serif; background: #fdfdfb; color: #1a1a1a; margin: 0; padding: 5vw; line-height: 1.6; }
+        body { font-family: 'Georgia', serif; background: #fdfdfb; color: #1a1a1a; margin: 0; padding: 5vw; line-height: 1.7; }
         .slate-container { max-width: 900px; margin: auto; }
-        header { border-bottom: 2px solid #000; margin-bottom: 40px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
-        h1 { font-size: clamp(2rem, 8vw, 3.5rem); margin: 0; letter-spacing: 2px; text-transform: uppercase; }
-        .hero-img { width: 100%; height: auto; border: 1px solid #ddd; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .meta { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; color: #555; }
-        .pitch-text { font-size: 1.5rem; font-style: italic; margin-top: 30px; border-left: 3px solid #000; padding-left: 20px; }
-        .print-btn { background: #000; color: #fff; padding: 15px 30px; text-decoration: none; display: inline-block; cursor: pointer; border: none; font-size: 1rem; margin-top: 40px; border-radius: 4px; font-weight: bold; }
-        @media print { .print-btn { display: none; } body { padding: 0; } }
+        header { border-bottom: 2px solid #000; margin-bottom: 60px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
+        header h1 { font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
+        
+        .project-card { margin-bottom: 100px; border-bottom: 1px solid #ddd; padding-bottom: 80px; page-break-after: always; }
+        .meta { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; color: #666; letter-spacing: 1px; margin-bottom: 15px; }
+        .hero-img { width: 100%; height: auto; border: 1px solid #eee; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        
+        h2 { font-size: 3rem; margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 2px; line-height: 1; }
+        .pitch-text { font-size: 1.25rem; color: #333; }
+        .pitch-text p { margin-bottom: 1.5rem; }
+        .highlight { font-style: italic; font-size: 1.5rem; border-left: 4px solid #000; padding-left: 25px; margin: 30px 0; color: #000; }
+        
+        .print-btn { background: #000; color: #fff; padding: 15px 30px; cursor: pointer; border: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; border-radius: 4px; }
+        
+        @media print { 
+            .print-btn, header { display: none; } 
+            body { padding: 0; background: #fff; }
+            .project-card { border: none; }
+            h2 { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
+
 <div class="slate-container">
-    <header><h1>Project Slate</h1><span>IDFA STYLE</span></header>
-    <div class="meta">DOCUMENTARY | IN DEVELOPMENT</div>
-    <img src="https://i.ibb.co/3ykpG04b/pitch-deckimage-1-Cardiff-Amsterdam-Dome.jpg" class="hero-img">
-    <h1>WILD TIDE</h1>
-    <div class="pitch-text">
-        <p>Cardiff has one of the most powerful tidal estuaries on Earth.</p>
-        <p>Amsterdam sits mostly below sea level inside a vast river delta.</p>
-        <p>Both cities are shaped by water.</p>
-        <p>Both must learn to live with water in very different ways.</p>
+    <header>
+        <h1>Industry Project Slate</h1>
+        <nav style="font-size: 0.7rem; font-family: sans-serif;">2026 REEL</nav>
+    </header>
+
+    <div class="project-card">
+        <div class="meta">Documentary | In Development</div>
+        <img src="https://i.ibb.co/3ykpG04b/pitch-deckimage-1-Cardiff-Amsterdam-Dome.jpg" class="hero-img">
+        <h2>WILD TIDE</h2>
+        <div class="pitch-text">
+            <div class="highlight">Cardiff has one of the most powerful tidal estuaries on Earth. Amsterdam sits mostly below sea level inside a vast river delta.</div>
+            <p>Both cities are shaped by water. Both must learn to live with water in very different ways.</p>
+        </div>
+        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
     </div>
-    <button class="print-btn" onclick="window.print()">PRINT PITCH DECK (PDF)</button>
+
+    <div class="project-card">
+        <div class="meta">Personal Documentary | Feature</div>
+        <div class="image-grid">
+            <img src="https://i.ibb.co/YFpWq3C0/KURU-WAKA-demos-7849.jpg" class="hero-img">
+            <img src="https://i.ibb.co/S769m07M/PHOTO-2025-07-24-16-41-55.jpg" class="hero-img">
+        </div>
+        <h2>WE WERE FRIENDS</h2>
+        <div class="pitch-text">
+            <div class="highlight">The story of my attempts to reunite two friends and learn about life on the way.</div>
+            <p>Michaela runs a retreat of art and healing on the North coast of The Netherlands. Jan lives in the vibrant North of Amsterdam, a storyteller retreating into his books.</p>
+            <p>As adults moving into our sixties, we now have time to reflect the impact WWII had on our own family psyches and formed our childhoods across three countries.</p>
+        </div>
+        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
+    </div>
+
+    <div class="project-card">
+        <div class="meta">Scripted Feature / Drama | In Development</div>
+        <img src="https://i.ibb.co/p6V08BvH/IMG-7819.jpg" class="hero-img">
+        <div class="image-grid">
+            <img src="https://i.ibb.co/0yXv9YmX/IMG-7968.jpg" class="hero-img">
+            <img src="https://i.ibb.co/zH9p6G9g/IMG-7980.jpg" class="hero-img">
+        </div>
+        <h2>PROJECT CORACLE</h2>
+        <div class="pitch-text">
+            <div class="highlight">After their father’s sudden death, a Welsh family discover a secret barge he had been building on a landlocked canal in the mountains.</div>
+            <p>Determined to protect his memory and shield their grieving mother from its chaotic state, they restore the vessel and—through a mixture of love, misreading and emotional necessity—commit to transporting it across land and sea to Amsterdam.</p>
+            <p>Unbeknownst to them, their mother has already reinvented herself there. Project Coracle is a story about grief, absurd devotion, and the moment when love shifts from control to permission.</p>
+        </div>
+        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
+    </div>
+
 </div>
 </body>
 </html>
