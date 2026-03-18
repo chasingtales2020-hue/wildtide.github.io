@@ -1,96 +1,401 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Slate | Pitch Decks</title>
+    <title>Chasing Tales | 2026 Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Base Styling */
-        body { font-family: 'Georgia', serif; background: #fdfdfb; color: #1a1a1a; margin: 0; padding: 5vw; line-height: 1.7; -webkit-print-color-adjust: exact; }
-        .slate-container { max-width: 900px; margin: auto; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
         
-        /* Navigation / Header */
-        header { border-bottom: 2px solid #000; margin-bottom: 60px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
-        header h1 { font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; margin: 0; }
-        
-        /* Project Cards */
-        .project-card { margin-bottom: 120px; border-bottom: 1px solid #ddd; padding-bottom: 80px; page-break-after: always; clear: both; }
-        .meta { font-family: Arial, sans-serif; font-weight: bold; font-size: 0.75rem; text-transform: uppercase; color: #666; letter-spacing: 1px; margin-bottom: 15px; }
-        
-        /* Image Handling */
-        .hero-img { width: 100%; height: auto; display: block; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .image-grid { display: flex; gap: 20px; margin-bottom: 30px; }
-        .image-grid img { width: 50%; height: auto; object-fit: cover; }
-        
-        /* Text Styling */
-        h2 { font-size: clamp(2rem, 8vw, 3.5rem); margin: 0 0 20px 0; text-transform: uppercase; letter-spacing: 2px; line-height: 1; }
-        .pitch-text { font-size: 1.25rem; color: #333; }
-        .pitch-text p { margin-bottom: 1.5rem; }
-        .highlight { font-style: italic; font-size: 1.5rem; border-left: 4px solid #000; padding-left: 25px; margin: 30px 0; color: #000; }
-        
-        /* Button */
-        .print-btn { background: #000; color: #fff; padding: 15px 30px; cursor: pointer; border: none; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; display: inline-block; }
-        .print-btn:hover { background: #333; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-        /* Print Engine */
-        @media print { 
-            .print-btn, header { display: none !important; } 
-            body { padding: 0; background: #fff; }
-            .project-card { border: none; margin-bottom: 0; padding-bottom: 0; }
-            h2 { font-size: 2.5rem; }
+        .bento-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #71717a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-img-container {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #111;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        /* Fullscreen Project Viewer - Optimized for speed */
+        #project-viewer {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+
+        #project-viewer.active {
+            display: flex;
+            transform: translateY(0);
+        }
+
+        .viewer-header {
+            padding: 1rem 2rem;
+            background: #0a0a0a;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .loader {
+            border: 2px solid rgba(255,255,255,0.1);
+            border-left-color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #contact-overlay {
+            transition: opacity 0.3s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        #contact-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .news-banner-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .hero-img-container:hover .news-banner-overlay {
+            background: rgba(255, 255, 255, 0.15);
+            border-top-color: rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8 pb-24">
 
-<div class="slate-container">
-    <header>
-        <h1>Industry Project Slate</h1>
-        <div style="font-size: 0.7rem; font-family: sans-serif;">PRODUCER VIEW</div>
-    </header>
-
-    <div class="project-card">
-        <div class="meta">Documentary | In Development</div>
-        <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/gemini-2.5-flash-image_allow_the_sail_boat_and_the_ferry_boat_to_both_be_seen_apart_from_each_other_sca-0.jpg" class="hero-img" alt="Wild Tide">
-        <h2>WILD TIDE</h2>
-        <div class="pitch-text">
-            <div class="highlight">Cardiff has one of the most powerful tidal estuaries on Earth. Amsterdam sits mostly below sea level inside a vast river delta.</div>
-            <p>Both cities are shaped by water. Both must learn to live with water in very different ways.</p>
+    <!-- Project Viewer -->
+    <div id="project-viewer">
+        <div class="viewer-header">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 bg-white rounded flex items-center justify-center">
+                    <div class="w-2 h-2 bg-black rotate-45"></div>
+                </div>
+                <span class="text-xs uppercase tracking-widest font-bold text-white/50" id="viewer-title">Project Archive</span>
+            </div>
+            <button onclick="closeProject()" class="bg-white text-black px-5 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-colors flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-3 h-3"></i> Close & Return
+            </button>
         </div>
-        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
+        <div id="iframe-loading" class="absolute inset-0 flex items-center justify-center bg-black z-10 pointer-events-none">
+            <div class="loader mr-3"></div>
+            <span class="text-xs uppercase tracking-widest">Accessing Data...</span>
+        </div>
+        <iframe id="project-iframe" src=""></iframe>
     </div>
 
-    <div class="project-card">
-        <div class="meta">Personal Documentary | Feature</div>
-        <div class="image-grid">
-            <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/KURU%20WAKA%20demos-7849.jpg" alt="Mieke">
-            <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/PHOTO-2025-07-24-16-41-55.jpg" alt="Jan">
+    <!-- 2026 Glass Nav -->
+    <nav class="glass-nav fixed top-0 left-0 w-full z-50 px-6 md:px-12 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="goHome()">
+            <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                <div class="w-4 h-4 bg-black rounded-sm rotate-45"></div>
+            </div>
+            <div class="text-xl font-bold tracking-tighter">
+                <span class="hidden sm:block uppercase tracking-widest text-sm font-bold">Chasing Tales</span>
+            </div>
         </div>
-        <h2>WE WERE FRIENDS</h2>
-        <div class="pitch-text">
-            <div class="highlight">The story of my attempts to reunite two friends and learn about life on the way.</div>
-            <p>Michaela runs a retreat of art and healing on the North coast of The Netherlands. Jan lives in the vibrant North of Amsterdam, a storyteller retreating into his books.</p>
-            <p>As adults moving into our sixties, we now have time to reflect on the impact WWII had on our own family psyches and formed our childhoods across three countries.</p>
+        <button onclick="toggleContact(true)" class="bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold hover:scale-105 transition-all">
+            Contact Us
+        </button>
+    </nav>
+
+    <!-- Contact Overlay -->
+    <div id="contact-overlay" class="fixed inset-0 z-[100] bg-[#0a0a0a]/95 backdrop-blur-2xl flex items-center justify-center p-6">
+        <div class="max-w-xl w-full">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-4xl font-bold italic tracking-tighter text-white">Get in Touch</h2>
+                <button onclick="toggleContact(false)" class="p-2 hover:bg-white/10 rounded-full transition-colors text-white">
+                    <i data-lucide="x" class="w-8 h-8"></i>
+                </button>
+            </div>
+            <form action="https://formspree.io/f/chasingtales2020@gmail.com" method="POST" class="space-y-6 text-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" name="name" required placeholder="Your Name" class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl w-full focus:border-white/40 outline-none">
+                    <input type="email" name="_replyto" required placeholder="Email Address" class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl w-full focus:border-white/40 outline-none">
+                </div>
+                <textarea name="message" rows="4" required placeholder="Bridge the gap..." class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl w-full focus:border-white/40 outline-none resize-none"></textarea>
+                <button type="submit" class="w-full bg-white text-black py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:invert transition-all">
+                    Transmit Message
+                </button>
+            </form>
         </div>
-        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
     </div>
 
-    <div class="project-card">
-        <div class="meta">Scripted Feature / Drama | In Development</div>
-        <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/IMG_7819.jpg" class="hero-img" alt="Barge Main">
-        <div class="image-grid">
-            <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/IMG_7968.jpg" alt="Barge Detail 1">
-            <img src="https://raw.githubusercontent.com/f76/wildtide.github.io/main/IMG_7980.jpg" alt="Barge Detail 2">
-        </div>
-        <h2>PROJECT CORACLE</h2>
-        <div class="pitch-text">
-            <div class="highlight">After their father’s sudden death, a Welsh family discover a secret barge he had been building on a landlocked canal in the mountains.</div>
-            <p>Determined to protect his memory and shield their grieving mother from its chaotic state, they restore the vessel and commit to transporting it across land and sea to Amsterdam.</p>
-            <p>Unbeknownst to them, their mother has already reinvented herself there. Project Coracle is a story about grief, absurd devotion, and the moment when love shifts from control to permission.</p>
-        </div>
-        <button class="print-btn" onclick="window.print()">PRINT PITCH DECK</button>
-    </div>
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto mt-32 px-4">
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-12 mb-24">
+            <header class="flex-1">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-gray-400 mb-8 tracking-wider">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                    </span>
+                    <span>Archive Connected</span>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="flex items-baseline gap-4 flex-wrap">
+                        <h1 class="text-6xl md:text-8xl font-bold gradient-text tracking-tighter leading-none">PONT</h1>
+                        <span class="text-xl md:text-2xl font-normal text-white/50 tracking-tight leading-none">a culture bridge between</span>
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-bold text-white tracking-tighter leading-none mt-4 mb-8">
+                        Diff & Dam
+                    </h1>
+                </div>
 
-</div>
+                <p class="text-gray-400 text-xl md:text-2xl max-w-xl font-light leading-relaxed">
+                    Documenting stories & chasing tales 
+                </p>
+            </header>
+
+            <div class="w-full lg:w-[420px] hero-img-container aspect-[4/5] shadow-2xl">
+                <img 
+                    src="https://chasingtales2020.wordpress.com/wp-content/uploads/2026/03/pitch-deckimage-1-cardiff-amsterdam-dome.jpg" 
+                    alt="PONT Hero" 
+                    class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-1000"
+                    onerror="this.src='https://images.unsplash.com/photo-1554048612-b6a482bc67e5?q=80&w=800&auto=format&fit=crop'"
+                >
+                <!-- Optimized News Banner -->
+                <div 
+                    onmouseenter="prefetchLink('https://chasingtales2020-hue.github.io/dome-trial-2/')"
+                    onclick="openProject('https://chasingtales2020-hue.github.io/dome-trial-2/', 'News & Latest Developments')" 
+                    class="news-banner-overlay absolute bottom-0 left-0 w-full px-6 py-4 flex items-center justify-between group cursor-pointer"
+                >
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-white text-black text-[8px] font-black tracking-widest uppercase">
+                            <span class="relative flex h-1 w-1">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-1 w-1 bg-red-600"></span>
+                            </span>
+                            New
+                        </div>
+                        <h3 class="text-sm font-bold tracking-widest uppercase text-white/90">News & Latest Developments</h3>
+                    </div>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="bento-grid" class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Dynamic Content Load -->
+        </div>
+
+        <footer class="mt-32 pt-10 border-t border-white/5 text-gray-500 text-xs tracking-widest uppercase flex flex-col md:flex-row justify-between gap-6">
+            <div>&copy; 2026 Chasing Tales Project</div>
+            <div class="flex gap-8">
+                <a href="https://chasingtales2020.wordpress.com/" target="_blank" class="hover:text-white transition underline">Source Archive</a>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const SITE_ID = "chasingtales2020.wordpress.com";
+        const API_ENDPOINT = `https://public-api.wordpress.com/rest/v1.1/sites/${SITE_ID}/posts?number=10&status=publish`;
+
+        // Pre-fetch storage to avoid repeated triggers
+        const prefetched = new Set();
+
+        /**
+         * Snappy Link Pre-fetching on Hover
+         */
+        function prefetchLink(url) {
+            if (!url || prefetched.has(url)) return;
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+            prefetched.add(url);
+        }
+
+        /**
+         * Opens project with immediate UI feedback
+         */
+        function openProject(url, title) {
+            const viewer = document.getElementById('project-viewer');
+            const iframe = document.getElementById('project-iframe');
+            const viewerTitle = document.getElementById('viewer-title');
+            const loading = document.getElementById('iframe-loading');
+
+            viewerTitle.innerText = title;
+            
+            // Show viewer immediately
+            viewer.style.display = 'flex';
+            requestAnimationFrame(() => {
+                viewer.classList.add('active');
+            });
+            
+            // Start loading content if not already loaded
+            if (iframe.src !== url) {
+                loading.style.display = 'flex';
+                iframe.src = url;
+            } else {
+                loading.style.display = 'none';
+            }
+            
+            iframe.onload = () => {
+                loading.style.display = 'none';
+            };
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProject() {
+            const viewer = document.getElementById('project-viewer');
+            viewer.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            setTimeout(() => {
+                viewer.style.display = 'none';
+                document.getElementById('project-iframe').src = '';
+            }, 400);
+        }
+
+        function goHome() {
+            const viewer = document.getElementById('project-viewer');
+            if (viewer.classList.contains('active')) {
+                closeProject();
+            }
+            const contact = document.getElementById('contact-overlay');
+            if (contact.classList.contains('active')) {
+                toggleContact(false);
+            }
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleContact(show) {
+            const overlay = document.getElementById('contact-overlay');
+            overlay.classList.toggle('active', show);
+            document.body.style.overflow = show ? 'hidden' : 'auto';
+        }
+
+        async function fetchPortfolio() {
+            try {
+                const response = await fetch(API_ENDPOINT);
+                const data = await response.json();
+                renderPosts(data.posts);
+            } catch (error) {
+                console.error("Fetch error", error);
+            }
+        }
+
+        function renderPosts(posts) {
+            const grid = document.getElementById('bento-grid');
+            grid.innerHTML = '';
+
+            const filteredPosts = posts.filter(post => post.title.toLowerCase() !== 'mission');
+
+            filteredPosts.forEach((post, index) => {
+                const title = post.title;
+                const link = post.URL;
+                const imageUrl = post.featured_image || `https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800`;
+
+                let colSpan = index === 0 ? "md:col-span-2 md:row-span-2" : "md:col-span-1";
+                if (index === 1) colSpan = "md:col-span-2";
+
+                const card = document.createElement('div');
+                card.className = `bento-card ${colSpan} group`;
+                card.onmouseenter = () => prefetchLink(link);
+                card.onclick = () => openProject(link, title);
+                
+                card.innerHTML = `
+                    <div class="absolute inset-0 -z-10 overflow-hidden">
+                        <img src="${imageUrl}" class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-1000" alt="${title}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                    </div>
+                    <div class="mt-auto relative z-10">
+                        <span class="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 mb-2 block">Series 0${index + 1}</span>
+                        <h2 class="${index === 0 ? 'text-4xl' : 'text-xl'} font-bold mb-3 tracking-tight">${title}</h2>
+                        <div class="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
+                            Enter Archive <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            const missionCard = document.createElement('div');
+            missionCard.className = "bento-card md:col-span-2 md:row-span-2 bg-white !text-black flex flex-col justify-center border-none";
+            missionCard.onmouseenter = () => prefetchLink('https://chasingtales2020.wordpress.com/2026/03/18/mission/');
+            missionCard.onclick = () => openProject('https://chasingtales2020.wordpress.com/2026/03/18/mission/', 'Strategic Overview');
+            missionCard.innerHTML = `
+                <div class="flex flex-col h-full">
+                    <span class="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40 mb-auto">Strategic Overview</span>
+                    <div class="mb-auto">
+                        <h3 class="font-bold text-4xl tracking-tight">Mission</h3>
+                        <h4 class="text-4xl font-bold tracking-tight opacity-60">Who, Why, What?</h4>
+                    </div>
+                    <div class="mt-auto flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase">
+                        Explore <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(missionCard);
+            
+            lucide.createIcons();
+        }
+
+        window.onload = fetchPortfolio;
+    </script>
 </body>
 </html>
